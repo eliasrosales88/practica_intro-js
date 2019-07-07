@@ -63,7 +63,21 @@ function spellGenerator(number) {
     
 }
 
+/**Ejemplos */
+spellGenerator(1);
+spellGenerator(2);
+spellGenerator(3);
+spellGenerator(4);
+spellGenerator(5);
+spellGenerator(6);
+spellGenerator(7);
+spellGenerator(8);
+spellGenerator(9);
+spellGenerator(10);
+spellGenerator(13);
+spellGenerator(15);
+spellGenerator(21);
+spellGenerator(33);
+spellGenerator(51);
+spellGenerator(53);
 spellGenerator(75);
-spellGenerator(70);
-spellGenerator(35);
-spellGenerator(40);
