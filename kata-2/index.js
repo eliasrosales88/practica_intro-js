@@ -36,32 +36,57 @@
 // * Hacer un validador de números romanos
 
 
-function romanToArabValidator(roman){
+let romans = {
+    I:1,
+    V:5,
+    X:10,
+    L:50,
+    C:100,
+    D:500,
+    M:1000
+};
+
+function isAllowedToSubstract(roman1, roman2) {
     
+}
+
+function romanToArabValidator(roman){
+   
+
+
+    
+
+}
+
+function romanToArab(roman) {
+    let romanArray = [];
     console.log(typeof roman);
     
     if (typeof roman == 'string' ) {
         let upperRoman = roman.toUpperCase();
         console.log(upperRoman);
-    }
-
-    
-
-}
-romanToArabValidator('xi');
-function romanToArab(roman) {
-    let romanArray = [];
-    
-    let numberToArray = roman.toString().split('');
-
-    numberToArray.forEach(element => {
-        checkCondition('digit',element, spellArray)  
-    });
-
-    if (roman >=1 && roman <= 3999) {
         
-        return  (spellArray.length == 0 ? console.log(number): console.log('Tu conjuro es-'+number+':', spellArray.join('')));
+        let romanToArray = upperRoman.split('');
         
+        for (let i = 0; i < romanToArray.length; i++) {
+            const key = romanToArray[i];
+
+            romanArray.push(romans[key]);
             
+        }
+
+        console.log(romanArray);
+        
+        return console.log(romanArray.reduce((total, num)=>{
+            return total + num;
+        }, 0));
+        
+
+
+
     }else console.log('Ingresa un número válido');
 }
+
+romanToArab('xi');
+romanToArab('xiiii');
+romanToArab('xl');
