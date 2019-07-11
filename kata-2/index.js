@@ -53,51 +53,55 @@ function romansToUpperCase(roman) {
 
 function romansToArray(roman) {
     let upperRoman = romansToUpperCase(roman);
-    console.log(upperRoman);
-
     let romanToArray = upperRoman.split('');
     return romanToArray;
 }
 
+
+function checkCharacters(roman) {
+    let isCharacterValid = true;
+    romansToArray(roman).forEach(letter => {
+        const current = letter;
+
+        if (romans[current] == undefined) {
+            isCharacterValid = false;
+        }
+
+    });
+    
+    return isCharacterValid;
+}
+
 function romanToArabValidator(roman) {
+    let isRomanValid = true;
+    // console.log('isCharacterValid', checkCharacters(roman));
 
-    if (typeof roman == 'string' && roman == romansToUpperCase(roman)) {
+    if (typeof roman != 'string'|| 
+        roman !== romansToUpperCase(roman) || 
+        checkCharacters(roman) !== true) {
+            isRomanValid = false;
 
+    }else{
+        // Evaluates not allowed combinations
         let upperRoman = romansToUpperCase(roman);
+        let exceptions = [
+            'IL', 'IC', 'ID', 'IM', 'XD',
+            'XM', 'IIII', 'VV', 'LL', 'DD',
+            'XXXX', 'CCCC', 'MMMM', 'VL', 'VD',
+            'LD', 'IVI', 'IXI', 'IIX', 'XXL', 'VVX'
+        ];
 
-        // Evalua STRING IF INCLUDES IL, IC, ID, IM, XD, XM
+        exceptions.forEach(exception => {
+            if (upperRoman.includes(exception)) {
+                isRomanValid = false;
+            }
+        });
 
-        if (
-            upperRoman.includes('IL') ||
-            upperRoman.includes('IC') ||
-            upperRoman.includes('ID') ||
-            upperRoman.includes('IM') ||
-            upperRoman.includes('XD') ||
-            upperRoman.includes('XM') ||
-            upperRoman.includes('IIII') ||
-            upperRoman.includes('VV') ||
-            upperRoman.includes('LL') ||
-            upperRoman.includes('DD') ||
-            upperRoman.includes('XXXX') ||
-            upperRoman.includes('CCCC') ||
-            upperRoman.includes('MMMM') ||
-            upperRoman.includes('VL') ||
-            upperRoman.includes('VD') ||
-            upperRoman.includes('LD') ||
-            upperRoman.includes('IVI') ||
-            upperRoman.includes('IXI') ||
-            upperRoman.includes('IIX') ||
-            upperRoman.includes('XXL') ||
-            upperRoman.includes('VVX')
-        ) {
-            return console.log(false);
-
-        } else return true;;
-
-
-
-    } else return console.log(false);;
-
+       
+    }        
+    // console.log('isRomanValid', isRomanValid);
+    
+    return isRomanValid;
 
 
 }
@@ -108,11 +112,8 @@ function romanToArab(roman) {
 
     if (romanToArabValidator(roman) === true) {
 
-        // let upperRoman = roman.toUpperCase();
-        // console.log(upperRoman);
 
         let romanToArray = romansToArray(roman);
-        console.log('ROMANNNS', romanToArray);
 
         for (let i = 0; i < romanToArray.length; i++) {
 
@@ -146,13 +147,10 @@ function romanToArab(roman) {
                 romanValuesArray.push(romans[current])
             }
 
-            // const key = romanToArray[i];
-            // romanValuesArray.push(romans[key]);
-
         }
     }
 
-    console.log(romanValuesArray);
+    // console.log(romanValuesArray);
 
     return console.log(romanValuesArray.reduce((total, num) => {
         return total + num;
@@ -168,8 +166,8 @@ romanToArab('CCCXLVII'); //347
 romanToArab('MCCCLIX'); //1359
 romanToArab('MMCMXC'); //2990
 romanToArab('XXX'); //30
-romanToArab('XXXX'); //false
+romanToArab('XXXX'); //0 invalid
 romanToArab('MMMCMXCIX'); //3999
 romanToArab('MDCLXXVIII'); //1678
 romanToArab('MMMDCCLXXX'); //3780
-romanToArab('MMMDCCALXXX'); //3780
+romanToArab('MMMDCCALXXX'); //0 invalid
