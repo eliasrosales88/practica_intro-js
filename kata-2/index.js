@@ -72,16 +72,25 @@ function checkCharacters(roman) {
     return isCharacterValid;
 }
 
+
+// Hacer un validador de números romanos
 function romanToArabValidator(roman) {
     let isRomanValid = true;
     // console.log('isCharacterValid', checkCharacters(roman));
 
-    if (typeof roman != 'string' ||
-        roman !== romansToUpperCase(roman) ||
-        checkCharacters(roman) !== true) {
-        isRomanValid = false;
+    try {
+        
+        if (roman < 1 && roman > 3999)          throw 'Ingresa un número romano entre 1 y 3999';
+        if (typeof roman != 'string')           throw 'Ingresa un número romano válido';
+        if (roman !== romansToUpperCase(roman)) throw 'Ingresa un número romano en mayúsculas';
+        if (checkCharacters(roman) !== true)    throw 'Ingresa una letra válida i.e I V X C';
 
-    } else {
+    } catch (error) {
+        isRomanValid = false;
+        console.log(error);
+        // return isRomanValidñ
+    }
+
         // Evaluates not allowed combinations
         let upperRoman = romansToUpperCase(roman);
         let exceptions = [
@@ -92,29 +101,26 @@ function romanToArabValidator(roman) {
         ];
 
         exceptions.forEach(exception => {
-            if (upperRoman.includes(exception)) {
+            try {
+                if (upperRoman.includes(exception)) throw 'No es un número válido';
+            } catch (error) {
                 isRomanValid = false;
+                console.log(error);
+                // return isRomanValid;
             }
         });
-
-
-    }
-    // console.log('isRomanValid', isRomanValid);
-
     return isRomanValid;
 
 
 }
 
+
+// Crear una función para pasar de número romanos a árabes
 function romanToArab(roman) {
     let romanValuesArray = [];
-
-
     if (romanToArabValidator(roman) === true) {
 
-
         let romanToArray = romansToArray(roman);
-
         for (let i = 0; i < romanToArray.length; i++) {
 
             const current = romanToArray[i];
@@ -122,14 +128,12 @@ function romanToArab(roman) {
             const next = romanToArray[i + 1];
             const next2 = romanToArray[i + 2];
 
-
             if (romans[current] < romans[prev] && romans[current] < romans[next]) {
                 romanValuesArray.push(romans[next] - romans[current])
             }
             if (romans[current] < romans[prev] && romans[current] > romans[next]) {
                 romanValuesArray.push(romans[current])
             }
-
             if (romans[current] == romans[next] && romans[current] !== romans[prev]) {
 
                 if (romans[current] == romans[next] && romans[current] == romans[next2]) {
@@ -173,6 +177,17 @@ romanToArab('MMMDCCLXXX'); //3780
 romanToArab('MMMDCCALXXX'); //0 invalid
 
 
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+//////////////                              /////////
+//////////////         PART 2               /////////         
+//////////////                              /////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+// Crear una función para pasar de árabes a romanos
+
 let arabs = {
     1000: 'M',
     900: 'CM',
@@ -211,15 +226,13 @@ function getHigherDivisor(number) {
             higher = key;
 
         } else {
-            //Si el modulus no es 0, toma el entero del resultado de la división entre el numero y su divisor más alto.
+            //Si el modulus no es 0, toma el entero del resultado de la división entre el número y su divisor más alto.
             if (key <= parseInt(number)) {
                 higher = key;
             }
-
         }
     }
     return higher;
-
 }
 
 function setRomanFragment(multiplier, array, divisor) {
@@ -227,9 +240,8 @@ function setRomanFragment(multiplier, array, divisor) {
     if (!Number.isInteger(multiplier)) {
         return;
     } else {
-        for (let i = 0; i < multiplier; i++) {
-            console.log('multiplier', multiplier);
 
+        for (let i = 0; i < multiplier; i++) {
             array.push(arabs[divisor]);
         }
 
@@ -237,75 +249,64 @@ function setRomanFragment(multiplier, array, divisor) {
 }
 
 function arabToRoman(number) {
-    let isNumber = true;
     let arabToRoman = [];
     let higherDivisor;
-    // let higherDivisornewNumber = [];
-    // let higherKey;
-    // let higherKeynewNumber;
     let romanMultiplier;
     let integerMultiplier;
-    let newNumberMultiplier;
     let newNumber;
-    // console.log(arabs);
 
-    if (isNaN(number)) {
-        return;
-    } else {
-
-        higherDivisor = getHigherDivisor(number);
-        romanMultiplier = number / higherDivisor;
-
-        if (Number.isInteger(romanMultiplier)) {
-            console.log('ENTERO');
-
-            setRomanFragment(romanMultiplier, arabToRoman, higherDivisor);
-
-        } else {
-            console.log('NO ENTERO', romanMultiplier);
-
-            setRomanFragment(Math.floor(romanMultiplier), arabToRoman, higherDivisor);
-            ////////////////////
-            // FLOAT OPERATION
-            ////////////////////
-
-            if (number >= 11 && number <= 99) {
-
-            } else {
-                newNumber = number % higherDivisor; //11 % 10 = 1
-                console.log('new', newNumber);
-                higherDivisor = getHigherDivisor(newNumber); //10
-                console.log('ONCE', higherDivisor);
-                integerMultiplier = newNumber / higherDivisor; //1.56
-
-                while (newNumber % higherDivisor > 0) {
-
-                    if (Number.isInteger(integerMultiplier)) {
-                        setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
-                        newNumber = newNumber % higherDivisor;
-                        higherDivisor = getHigherDivisor(newNumber);
-                        integerMultiplier = newNumber / higherDivisor;
-                    } else {
-                        //Aqui obtenemos el romano del entero
-                        integerMultiplier = Math.floor(integerMultiplier);
-                        setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
-
-                        newNumber = newNumber % higherDivisor;
-                        higherDivisor = getHigherDivisor(newNumber);
-                        integerMultiplier = newNumber / higherDivisor;
-                        setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
-                    }
-                }
-            }
-        }
-
-        console.log('arabToRoman', arabToRoman);
-
-        console.log('JOIN', arabToRoman.join(''));
-
-        // console.log(number, key,'romanCount', romanCount);
-
+    try {
+        if (isNaN(number)) throw 'No es un número'
+    } catch (error) {
+        console.log(error);
     }
+
+    higherDivisor = getHigherDivisor(number);
+    romanMultiplier = number / higherDivisor;
+
+    if (Number.isInteger(romanMultiplier)) {
+        // console.log('ENTERO');
+
+        setRomanFragment(romanMultiplier, arabToRoman, higherDivisor);
+
+    } else {
+        // console.log('FLOAT');
+        
+        //Se establece el la parte entera del multiplicador
+        setRomanFragment(Math.floor(romanMultiplier), arabToRoman, higherDivisor);
+
+        newNumber = number % higherDivisor;
+        higherDivisor = getHigherDivisor(newNumber);
+        integerMultiplier = newNumber / higherDivisor;
+        do {
+            //Se usa do while para números menores a 100
+            if (Number.isInteger(integerMultiplier)) {
+                setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
+                newNumber = newNumber % higherDivisor;
+                higherDivisor = getHigherDivisor(newNumber);
+                integerMultiplier = newNumber / higherDivisor;
+            } else {
+                //Aqui obtenemos el romano de la parte entera del del float
+                integerMultiplier = Math.floor(integerMultiplier);
+                setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
+
+                //Aqui establecemos el nuevo número a evaluar
+                newNumber = newNumber % higherDivisor;
+                higherDivisor = getHigherDivisor(newNumber);
+                integerMultiplier = newNumber / higherDivisor;
+                setRomanFragment(integerMultiplier, arabToRoman, higherDivisor);
+
+            }
+        } while (newNumber % higherDivisor > 0);
+    }
+
+    // console.log('arabToRoman', arabToRoman);
+
+    console.log(arabToRoman.join(''));
+
+    // console.log(number, key,'romanCount', romanCount);
+
+
 }
 
 
@@ -313,7 +314,7 @@ function arabToRoman(number) {
 // arabToRoman(500);   // D 500
 // arabToRoman(244);   // CCXLIV 244
 // arabToRoman(347);   // CCCXLVII 347
-// arabToRoman(1359);  // MCCCLIX 1359
+arabToRoman(1359); // MCCCLIX 1359
 // arabToRoman(2990);  // MMCMXC 2990
 // arabToRoman(30);    // XXX 30
 // // arabToRoman(0);     // XXXX 0 invalid
@@ -321,4 +322,5 @@ arabToRoman(3999); // MMMCMXCIX 3999
 arabToRoman(2849); // MMDCCCXLIX 2849
 //arabToRoman(1678);  // MDCLXXVIII 1678
 //arabToRoman(3780); // MMMDCCLXXX 3780
-arabToRoman(11); // MMMDCCALXXX 0 invalid
+arabToRoman('A35'); // MMMDCCALXXX 0 invalid
+arabToRoman(35); // MMMDCCALXXX 0 invalid
