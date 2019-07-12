@@ -270,31 +270,12 @@ function arabToRoman(number) {
             ////////////////////
 
             if (number >= 11 && number <= 99) {
-                while (newNumber % higherDivisor > 0) {
-
-                    if (Number.isInteger(romanMultiplier)) {
-                        setRomanFragment(romanMultiplier, arabToRoman, higherDivisor);
-                        newNumber = newNumber % higherDivisor;
-                        higherDivisor = getHigherDivisor(newNumber);
-                        romanMultiplier = newNumber / higherDivisor;
-                    } else {
-                        //Aqui obtenemos el romano del entero
-                        romanMultiplier = Math.floor(romanMultiplier);
-                        setRomanFragment(romanMultiplier, arabToRoman, higherDivisor);
-
-                        newNumber = newNumber % higherDivisor;
-                        higherDivisor = getHigherDivisor(newNumber);
-                        romanMultiplier = newNumber / higherDivisor;
-                        setRomanFragment(romanMultiplier, arabToRoman, higherDivisor);
-                    }
-                }
 
             } else {
                 newNumber = number % higherDivisor; //11 % 10 = 1
                 console.log('new', newNumber);
                 higherDivisor = getHigherDivisor(newNumber); //10
                 console.log('ONCE', higherDivisor);
-
                 integerMultiplier = newNumber / higherDivisor; //1.56
 
                 while (newNumber % higherDivisor > 0) {
