@@ -68,7 +68,7 @@ function checkCharacters(roman) {
         }
 
     });
-    
+
     return isCharacterValid;
 }
 
@@ -76,12 +76,12 @@ function romanToArabValidator(roman) {
     let isRomanValid = true;
     // console.log('isCharacterValid', checkCharacters(roman));
 
-    if (typeof roman != 'string'|| 
-        roman !== romansToUpperCase(roman) || 
+    if (typeof roman != 'string' ||
+        roman !== romansToUpperCase(roman) ||
         checkCharacters(roman) !== true) {
-            isRomanValid = false;
+        isRomanValid = false;
 
-    }else{
+    } else {
         // Evaluates not allowed combinations
         let upperRoman = romansToUpperCase(roman);
         let exceptions = [
@@ -97,10 +97,10 @@ function romanToArabValidator(roman) {
             }
         });
 
-       
-    }        
+
+    }
     // console.log('isRomanValid', isRomanValid);
-    
+
     return isRomanValid;
 
 
@@ -171,3 +171,79 @@ romanToArab('MMMCMXCIX'); //3999
 romanToArab('MDCLXXVIII'); //1678
 romanToArab('MMMDCCLXXX'); //3780
 romanToArab('MMMDCCALXXX'); //0 invalid
+
+
+let arabs = {
+    1000: 'M',
+    500: 'D',
+    100: 'C',
+    90: 'XC',
+    80: 'LXXX',
+    70: 'LXX',
+    60: 'LX',
+    50: 'L',
+    40: 'XL',
+    30: 'XXX',
+    20: 'XX',
+    10: 'X',
+    9: 'IX',
+    8: 'VIII',
+    7: 'VII',
+    6: 'VI',
+    5: 'V',
+    4: 'IV',
+    3: 'III',
+    2: 'II',
+    1: 'I'
+}
+
+function checkHigher(divisorsArray) {
+    return divisorsArray.length - 1
+
+}
+
+function arabToRoman(number) {
+    let isNumber = true;
+    let arabToRoman = [];
+    let divisors = [];
+    let higherKey;
+    let romanMultiplier;
+
+    console.log(arabs);
+
+    for (let key in arabs) {
+        key = parseInt(key);
+        console.log('key', key);
+        console.log('typeof key', typeof key);
+        console.log(typeof (parseInt(number) % parseInt(key)));
+
+        if (parseInt(number) % parseInt(key) === 0) {
+            divisors.push(key)
+
+        }
+    }
+    console.log('DIVISORS', divisors);
+    console.log('checkHigher', checkHigher(divisors, number));
+
+    higherKey = divisors[checkHigher(divisors)];
+    romanMultiplier = number / higherKey;
+
+    for (let i = 0; i < romanMultiplier; i++) {
+        arabToRoman.push(arabs[higherKey]);
+    }
+
+    console.log('higherKey', higherKey);
+
+    console.log('JOIN', arabToRoman.join(''));
+
+
+
+    // console.log(number, key,'romanCount', romanCount);
+
+
+}
+
+
+arabToRoman(200);
+arabToRoman(500);
+arabToRoman(244);
