@@ -78,9 +78,16 @@ function romanToArabValidator(roman) {
     let isRomanValid = true;
     // console.log('isCharacterValid', checkCharacters(roman));
 
+    let upperRoman = romansToUpperCase(roman);
+    let exceptions = [
+        'IL', 'IC', 'ID', 'IM', 'XD',
+        'XM', 'IIII', 'VV', 'LL', 'DD',
+        'XXXX', 'CCCC', 'MMMM', 'VL', 'VD',
+        'LD', 'IVI', 'IXI', 'IIX', 'XXL', 'VVX'
+    ];
     try {
         
-        if (roman < 1 && roman > 3999)          throw 'Ingresa un número romano entre 1 y 3999';
+        if (roman < 1 || roman > 3999)          throw 'Ingresa un número romano entre 1 y 3999';
         if (typeof roman != 'string')           throw 'Ingresa un número romano válido';
         if (roman !== romansToUpperCase(roman)) throw 'Ingresa un número romano en mayúsculas';
         if (checkCharacters(roman) !== true)    throw 'Ingresa una letra válida i.e I V X C';
@@ -88,17 +95,11 @@ function romanToArabValidator(roman) {
     } catch (error) {
         isRomanValid = false;
         console.log(error);
-        // return isRomanValidñ
+        // return isRomanValid
     }
 
         // Evaluates not allowed combinations
-        let upperRoman = romansToUpperCase(roman);
-        let exceptions = [
-            'IL', 'IC', 'ID', 'IM', 'XD',
-            'XM', 'IIII', 'VV', 'LL', 'DD',
-            'XXXX', 'CCCC', 'MMMM', 'VL', 'VD',
-            'LD', 'IVI', 'IXI', 'IIX', 'XXL', 'VVX'
-        ];
+       
 
         exceptions.forEach(exception => {
             try {
@@ -256,7 +257,8 @@ function arabToRoman(number) {
     let newNumber;
 
     try {
-        if (isNaN(number)) throw 'No es un número'
+        if (isNaN(number)) throw 'No es un número';
+        if ( number < 1 || number >3999) throw 'Ingresa un número entre 1 y 3999';
     } catch (error) {
         console.log(error);
     }
@@ -317,10 +319,10 @@ function arabToRoman(number) {
 arabToRoman(1359); // MCCCLIX 1359
 // arabToRoman(2990);  // MMCMXC 2990
 // arabToRoman(30);    // XXX 30
-// // arabToRoman(0);     // XXXX 0 invalid
+arabToRoman(0);     // XXXX 0 invalid
 arabToRoman(3999); // MMMCMXCIX 3999
 arabToRoman(2849); // MMDCCCXLIX 2849
 //arabToRoman(1678);  // MDCLXXVIII 1678
 //arabToRoman(3780); // MMMDCCLXXX 3780
-arabToRoman('A35'); // MMMDCCALXXX 0 invalid
-arabToRoman(35); // MMMDCCALXXX 0 invalid
+arabToRoman('A35'); //
+arabToRoman(35); // XXXV
