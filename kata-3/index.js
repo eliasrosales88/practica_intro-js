@@ -54,6 +54,8 @@
 
 // ### Ejemplos
 
+//EL JUEGO RECIBE DOS JUGADORES  Y UNAS BARAJAS
+
 // Entrada: Jugador 1: 2H 3D 5S 9C KD Jugador 2: 2C 3H 4S 8C AH
 // Salida: Jugador 2 gana, carta más alta:
 
@@ -91,12 +93,10 @@ class Pack {
                     } else {
                         pack.push(values[random] + suit);
                     }
-                })
+                });
             });
 
         } while (pack.length < 52);
-
-
 
         this.pack = pack;
     }
@@ -106,63 +106,46 @@ class Pack {
     }
 }
 
-let myPack = new Pack(suits, values);
-myPack.setPack(suits, values);
-console.log('myPack', myPack.getPack());
 
 
 
-
-// ### Cartas
-// Una carta se compone de dos cosas:
-
-// Palo (suit) que pueden ser los siguientes:
-// * picas/spades (S)
-// * corazones/hearts (H)
-// * tréboles/clubs (C)
-// * diamantes/diamonds (D). 
-
-// Valor:
-// * 2 
-// * 3
-// * 4
-// * 5
-// * 6
-// * 7
-// * 8
-// * 9
-// * 10 /Ten (T)
-// * dama/Jack (J)
-// * reina/Queen (Q)
-// * rey/King (K)
-// * as/Ace (A). 
-
-class Card {
-    constructor(suit, value) {
-        this.suit = suit;
-        this.value = value;
+class Hand {
+    constructor(pack) {
+        this.pack = pack;
+        this.hand = [];
+        this.gamePack;
     }
 
-    setCard(suit, value) {
-        this.suit = suit;
-        this.value = value;
-    }
-    getCard() {
-        return {
-            suit: this.suit,
-            value: this.value
-        }
+    setHand(pack) {
+        do {
+            let random = Math.floor(Math.random() * pack.length);
+            if (this.hand.join('').includes(pack[random])) {
+                return;                
+            } else {
+                this.hand.push(pack[random]);
+            }
+        } while (this.hand.length < 5);
     }
 }
 
-//Puede ser una clase?? o es un objeto??
-let baraja = {
 
-}
 
-let carta1 = new Card('S', 'A');
 
-console.log(carta1.getCard());
+//aqui se define la Partida. FALTA CREAR EL OBJETO JUEGO
+//Este objeto tiene que recibir hasta un maximo de 
+let gamePack = new Pack();
+gamePack.setPack(suits, values)
+console.log('gamePack', gamePack.getPack());
+
+
+let myHand = new Hand();
+myHand.setHand(gamePack.getPack());
+console.log('myHand', myHand.hand);
+console.log('myHandPACK', myHand.pack);
+
+
+
+
 
 
 // class Mano
