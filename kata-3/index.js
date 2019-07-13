@@ -67,6 +67,102 @@
 // Salida: Empate
 'use strict'
 
+let suits = ['S', 'H', 'C', 'D'];
+let values = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
 
 
 
+class Pack {
+    constructor(suits, values) {
+        this.suits = suits;
+        this.values = values;
+        this.pack;
+    }
+
+    setPack(suits, values) {
+        let pack = [];
+
+        do {
+            values.forEach(value => {
+                suits.forEach(suit => {
+                    let random = Math.floor(Math.random() * 13);
+                    if (pack.join('').includes(values[random] + suit)) {
+                        return;
+                    } else {
+                        pack.push(values[random] + suit);
+                    }
+                })
+            });
+
+        } while (pack.length < 52);
+
+
+
+        this.pack = pack;
+    }
+
+    getPack() {
+        return this.pack;
+    }
+}
+
+let myPack = new Pack(suits, values);
+myPack.setPack(suits, values);
+console.log('myPack', myPack.getPack());
+
+
+
+
+// ### Cartas
+// Una carta se compone de dos cosas:
+
+// Palo (suit) que pueden ser los siguientes:
+// * picas/spades (S)
+// * corazones/hearts (H)
+// * tréboles/clubs (C)
+// * diamantes/diamonds (D). 
+
+// Valor:
+// * 2 
+// * 3
+// * 4
+// * 5
+// * 6
+// * 7
+// * 8
+// * 9
+// * 10 /Ten (T)
+// * dama/Jack (J)
+// * reina/Queen (Q)
+// * rey/King (K)
+// * as/Ace (A). 
+
+class Card {
+    constructor(suit, value) {
+        this.suit = suit;
+        this.value = value;
+    }
+
+    setCard(suit, value) {
+        this.suit = suit;
+        this.value = value;
+    }
+    getCard() {
+        return {
+            suit: this.suit,
+            value: this.value
+        }
+    }
+}
+
+//Puede ser una clase?? o es un objeto??
+let baraja = {
+
+}
+
+let carta1 = new Card('S', 'A');
+
+console.log(carta1.getCard());
+
+
+// class Mano
