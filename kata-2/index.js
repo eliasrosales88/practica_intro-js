@@ -83,7 +83,9 @@ function romanToArabValidator(roman) {
         'IL', 'IC', 'ID', 'IM', 'XD',
         'XM', 'IIII', 'VV', 'LL', 'DD',
         'XXXX', 'CCCC', 'MMMM', 'VL', 'VD',
-        'LD', 'IVI', 'IXI', 'IIX', 'XXL', 'VVX'
+        'LD', 'IVI', 'IXI', 'IIX', 'XXL', 'VVX',
+        'A','B','E','F','G','H','J','K','N','O',
+        'P','Q','R','S','T','U','W','Y','Z'
     ];
     try {
         
