@@ -34,7 +34,7 @@
 // * Crear una función para pasar de número romanos a árabes
 // * Crear una función para pasar de árabes a romanos
 // * Hacer un validador de números romanos
-
+'use strict'
 
 let romans = {
     I: 1,
