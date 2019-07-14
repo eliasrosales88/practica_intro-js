@@ -188,13 +188,7 @@ class Rules {
                 this.combinations.push(hand[0].charAt(0));
             }
         }
-        for (let i = 0; i < hand.length; i++) {
-            if (i == 0) {} else if (hand[0].charAt(1) === hand[i].charAt(1)) {
-                this.colors.push(hand[0].charAt(1));
-            }
-        }
 
-        
         if (this.combinations.length == 1) {
             this.result = types.pair;        
             
@@ -205,20 +199,21 @@ class Rules {
             this.result = types.poker;        
             
         }
+
+        //Color
+        for (let i = 0; i < hand.length; i++) {
+            if (i == 0) {} else if (hand[0].charAt(1) === hand[i].charAt(1)) {
+                this.colors.push(hand[0].charAt(1));
+            }
+        }
         
         if (this.colors.length == 4) {
             this.result = types.flush;        
-            
         }
 
         return this.result;
     }
 }
-
-
-
-
-
 
 
 function game(pack, playerNames) {
@@ -271,6 +266,8 @@ function game(pack, playerNames) {
     console.log('PLAYER HANDS', playerHands);
     console.log('RESULT P1', result1);
     console.log('RESULT P2', result2);
+    
+    
     if (result1 == result2 ) {
         console.log('Empate');
         
@@ -287,6 +284,10 @@ function game(pack, playerNames) {
         console.log('Gana jugador 1 con poker');
         
     }
+    if (result1 > result2 && result1 == 4) {
+        console.log('Gana jugador 1 con color');
+        
+    }
     if (result2 > result1 && result2 == 1) {
         console.log('Gana jugador 2 con pares');
         
@@ -297,6 +298,10 @@ function game(pack, playerNames) {
     }
     if (result2 > result1 && result2 == 3) {
         console.log('Gana jugador 2 con poker');
+        
+    }
+    if (result2 > result1 && result2 == 4) {
+        console.log('Gana jugador 2 con color');
         
     }
 }
