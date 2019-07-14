@@ -106,46 +106,70 @@ class Pack {
     }
 }
 
-
-
-
 class Hand {
     constructor(pack) {
         this.pack = pack;
         this.hand = [];
-        this.gamePack;
+        // this.gamePack;
     }
 
     setHand(pack) {
         do {
             let random = Math.floor(Math.random() * pack.length);
             if (this.hand.join('').includes(pack[random])) {
-                return;                
+                return;
             } else {
                 this.hand.push(pack[random]);
             }
         } while (this.hand.length < 5);
     }
+
+    getHand() {
+        return this.hand;
+    }
+}
+
+
+class Rules {}
+
+function game(pack, playerNames) {
+    console.log('PACK', pack);
+
+    let players = playerNames; // 2
+    let playerHands = [];
+    let gamePack = [];
+
+    //Los jugadores toman cartas de la baraja 
+    players.forEach(player => {
+        if (gamePack.length > 0) {
+            let playerHand = new Hand();
+            playerHand.setHand(gamePack);
+            let hand = playerHand.getHand();
+            playerHands.push(hand);
+
+        } else {
+            let playerHand = new Hand();
+            playerHand.setHand(pack);
+            let hand = playerHand.getHand();
+            playerHands.push(hand);
+            pack.forEach(packCard => {
+                if (!hand.join('').includes(packCard)) {
+                    gamePack.push(packCard);
+                }
+                
+            })
+        }
+        console.log('PLAYER HANDS', playerHands);
+
+    })
+
 }
 
 
 
-
-//aqui se define la Partida. FALTA CREAR EL OBJETO JUEGO
-//Este objeto tiene que recibir hasta un maximo de 
-let gamePack = new Pack();
-gamePack.setPack(suits, values)
-console.log('gamePack', gamePack.getPack());
-
-
-let myHand = new Hand();
-myHand.setHand(gamePack.getPack());
-console.log('myHand', myHand.hand);
-console.log('myHandPACK', myHand.pack);
+let pack = new Pack();
+pack.setPack(suits, values)
 
 
 
-
-
-
-// class Mano
+game(pack.getPack(), ['elias', 'luis']);
