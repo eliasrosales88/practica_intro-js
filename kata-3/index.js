@@ -72,7 +72,15 @@
 let suits = ['S', 'H', 'C', 'D'];
 let values = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
 
-
+let types = {
+    pair: 1,
+    threeOfkind: 2,
+    straight: 3,
+    flush: 4,
+    full: 5,
+    poker: 6,
+    straightFull: 7,
+}
 
 class Pack {
     constructor(suits, values) {
@@ -81,6 +89,9 @@ class Pack {
         this.pack;
     }
 
+
+
+    // Crea una baraja aleatoria
     setPack(suits, values) {
         let pack = [];
 
@@ -113,6 +124,8 @@ class Hand {
         // this.gamePack;
     }
 
+
+    //Crea un mano aleatoria de una baraja
     setHand(pack) {
         do {
             let random = Math.floor(Math.random() * pack.length);
@@ -130,7 +143,83 @@ class Hand {
 }
 
 
-class Rules {}
+class Rules {
+    constructor(hand) {
+        this.hand = hand;
+        this.criteria = {};
+        this.criteriaArray = [];
+        this.combinations = [];
+        this.colors = [];
+        this.result = 0;
+    }
+
+    //Evalua la mano de forma individual y define el tipo de mano par, dobles parejas, trio, etc... Define el valor de la mano
+
+    //Toma el primer valor de cada carta para definir el valor
+    //En caso de que el valor se "A" se verifica si existe otra carta a la derecha...
+    //...para hacer esto hay que hacer sort de la mano (o similar) cumpliendo un criterio.
+    getEvaluation(hand) {
+        hand.forEach(card => {
+
+            this.criteria[card] = parseInt(card.charAt(0));
+
+            switch (card.charAt(0)) {
+                case 'T':
+                    this.criteria[card] = 10;
+                    break;
+                case 'J':
+                    this.criteria[card] = 11;
+                    break;
+                case 'Q':
+                    this.criteria[card] = 12;
+                    break;
+                case 'K':
+                    this.criteria[card] = 13;
+                    break;
+                case 'A':
+                    this.criteria[card] = 14;
+                    break;
+            }
+        })
+
+        //Combinaciones
+        for (let i = 0; i < hand.length; i++) {
+            if (i == 0) {} else if (hand[0].charAt(0) === hand[i].charAt(0)) {
+                this.combinations.push(hand[0].charAt(0));
+            }
+        }
+        for (let i = 0; i < hand.length; i++) {
+            if (i == 0) {} else if (hand[0].charAt(1) === hand[i].charAt(1)) {
+                this.colors.push(hand[0].charAt(1));
+            }
+        }
+
+        
+        if (this.combinations.length == 1) {
+            this.result = types.pair;        
+            
+        }else if (this.combinations.length == 2) {
+            this.result = types.threeOfkind;        
+            
+        }else if (this.combinations.length == 3) {
+            this.result = types.poker;        
+            
+        }
+        
+        if (this.colors.length == 4) {
+            this.result = types.flush;        
+            
+        }
+
+        return this.result;
+    }
+}
+
+
+
+
+
+
 
 function game(pack, playerNames) {
     console.log('PACK', pack);
@@ -138,6 +227,8 @@ function game(pack, playerNames) {
     let players = playerNames; // 2
     let playerHands = [];
     let gamePack = [];
+    let result1 = 0;
+    let result2 = 0;
 
     //Los jugadores toman cartas de la baraja 
     players.forEach(player => {
@@ -156,13 +247,58 @@ function game(pack, playerNames) {
                 if (!hand.join('').includes(packCard)) {
                     gamePack.push(packCard);
                 }
-                
+
             })
         }
-        console.log('PLAYER HANDS', playerHands);
+    });
+
+    let evaluatePlayer1 = new Rules();
+    let evaluatePlayer2 = new Rules();
+    playerHands.forEach((hand, i) => {
+        try {
+            if (hand.length < 5) throw 'Un jugador no tiene 5 cartas. Intentalo de nuevo.'
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
+        if (i == 0) {
+            result1 = evaluatePlayer1.getEvaluation(hand);
+        } else  result2 = evaluatePlayer2.getEvaluation(hand);
 
     })
-
+    console.log('PLAYER HANDS', playerHands);
+    console.log('RESULT P1', result1);
+    console.log('RESULT P2', result2);
+    if (result1 == result2 ) {
+        console.log('Empate');
+        
+    }
+    if (result1 > result2 && result1 == 1) {
+        console.log('Gana jugador 1 con pares');
+        
+    }
+    if (result1 > result2 && result1 == 2) {
+        console.log('Gana jugador 1 con trio');
+        
+    }
+    if (result1 > result2 && result1 == 3) {
+        console.log('Gana jugador 1 con poker');
+        
+    }
+    if (result2 > result1 && result2 == 1) {
+        console.log('Gana jugador 2 con pares');
+        
+    }
+    if (result2 > result1 && result2 == 2) {
+        console.log('Gana jugador 2 con trio');
+        
+    }
+    if (result2 > result1 && result2 == 3) {
+        console.log('Gana jugador 2 con poker');
+        
+    }
 }
 
 
@@ -173,3 +309,9 @@ pack.setPack(suits, values)
 
 
 game(pack.getPack(), ['elias', 'luis']);
+
+
+
+// let hand2 = evaluateRules.getEvaluation(hand);
+
+// let result = evaluateRules.compareHands(han1, hand2);
