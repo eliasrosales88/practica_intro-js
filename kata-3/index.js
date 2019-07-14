@@ -269,6 +269,9 @@ function game(pack, playerNames) {
     
     
     if (result1 == result2 ) {
+        // if (condition) {
+            
+        // }
         console.log('Empate');
         
     }
