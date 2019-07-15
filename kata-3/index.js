@@ -151,6 +151,7 @@ class Rules {
         this.combinations = [];
         this.colors = [];
         this.result = 0;
+        this.highCard;
     }
 
     //Evalua la mano de forma individual y define el tipo de mano par, dobles parejas, trio, etc... Define el valor de la mano
@@ -160,8 +161,14 @@ class Rules {
     //...para hacer esto hay que hacer sort de la mano (o similar) cumpliendo un criterio.
     getEvaluation(hand) {
         hand.forEach(card => {
+            
+            console.log('parseInt(card.charAt(0))', parseInt(card.charAt(0)));
+            
+            if (parseInt(card.charAt(0)) !== NaN) {
+                this.criteria[card] = parseInt(card.charAt(0));
+                
+            }
 
-            this.criteria[card] = parseInt(card.charAt(0));
 
             switch (card.charAt(0)) {
                 case 'T':
@@ -180,23 +187,34 @@ class Rules {
                     this.criteria[card] = 14;
                     break;
             }
-        })
+        
 
+        })
+   
+        
         //Combinaciones
         for (let i = 0; i < hand.length; i++) {
-            if (i == 0) {} else if (hand[0].charAt(0) === hand[i].charAt(0)) {
-                this.combinations.push(hand[0].charAt(0));
+            console.log(hand[0]);
+            
+            if (i > 0) {
+                if (hand[0].charAt(0) === hand[i].charAt(0)) {
+                    this.combinations.push(hand[0].charAt(0));
+                }
+                
             }
         }
-
+        
         if (this.combinations.length == 1) {
-            this.result = types.pair;        
+            this.result = types.pair;     
+            this.criteriaArray.push(hand[0]);
             
         }else if (this.combinations.length == 2) {
             this.result = types.threeOfkind;        
+            this.criteriaArray.push(hand[0]);
             
         }else if (this.combinations.length == 3) {
             this.result = types.poker;        
+            this.criteriaArray.push(hand[0]);
             
         }
 
@@ -210,42 +228,59 @@ class Rules {
         if (this.colors.length == 4) {
             this.result = types.flush;        
         }
-
+        console.log('CRITERIA', this.criteria);
+        console.log('CRITERIA ARRAY', this.criteriaArray);
+        this.criteriaArray.forEach(card => {
+            for (const key in this.criteria) {
+                if ( card === key) {
+                    this.highCard = this.criteria[key];
+                    
+                }
+            }
+        });
         return this.result;
+    }
+
+    getHighCard(){
+        return this.highCard;
     }
 }
 
 
-function game(pack, playerNames) {
+function game(pack, playerHands) {
     console.log('PACK', pack);
 
-    let players = playerNames; // 2
-    let playerHands = [];
+    // let players = playerNames; // 2
+    // let playerHands = playerHands;
     let gamePack = [];
     let result1 = 0;
     let result2 = 0;
+    let criteria1;
+    let criteria2;
 
     //Los jugadores toman cartas de la baraja 
-    players.forEach(player => {
-        if (gamePack.length > 0) {
-            let playerHand = new Hand();
-            playerHand.setHand(gamePack);
-            let hand = playerHand.getHand();
-            playerHands.push(hand);
+    // players.forEach(playerHand => {
+    //     if (gamePack.length > 0) {
+    //         // let playerHand = new Hand();
+    //         let playerHand = playerHand;
+    //         // playerHand.setHand(gamePack);
+    //         // let hand = playerHand.getHand();
+    //         playerHands.push(playerHand);
 
-        } else {
-            let playerHand = new Hand();
-            playerHand.setHand(pack);
-            let hand = playerHand.getHand();
-            playerHands.push(hand);
-            pack.forEach(packCard => {
-                if (!hand.join('').includes(packCard)) {
-                    gamePack.push(packCard);
-                }
+    //     } else {
+    //         // let playerHand = new Hand();
+    //         let playerHand = playerHand;
+    //         // playerHand.setHand(pack);
+    //         // let hand = playerHand.getHand();
+    //         playerHands.push(playerHand);
+    //         pack.forEach(packCard => {
+    //             if (!hand.join('').includes(packCard)) {
+    //                 gamePack.push(packCard);
+    //             }
 
-            })
-        }
-    });
+    //         })
+    //     }
+    // });
 
     let evaluatePlayer1 = new Rules();
     let evaluatePlayer2 = new Rules();
@@ -260,8 +295,13 @@ function game(pack, playerNames) {
 
         if (i == 0) {
             result1 = evaluatePlayer1.getEvaluation(hand);
-        } else  result2 = evaluatePlayer2.getEvaluation(hand);
-
+            criteria1 = evaluatePlayer1.getHighCard();
+        } else  {
+            result2 = evaluatePlayer2.getEvaluation(hand);
+            criteria2 = evaluatePlayer2.getHighCard();
+        }
+        console.log('Hand', hand);
+        
     })
     console.log('PLAYER HANDS', playerHands);
     console.log('RESULT P1', result1);
@@ -269,10 +309,16 @@ function game(pack, playerNames) {
     
     
     if (result1 == result2 ) {
-        // if (condition) {
+        if (criteria1 > criteria2) {
+            console.log('Gana jugador 1 con par más alto');
+        }else if (criteria2 > criteria1) {
+            console.log('Gana jugador 2 con par más alto');
             
-        // }
-        console.log('Empate');
+        }else console.log('Empate');
+        
+        console.log('CRITERIA 1', criteria1);
+        console.log('CRITERIA 2', criteria2);
+        // console.log('Empate');
         
     }
     if (result1 > result2 && result1 == 1) {
@@ -314,9 +360,10 @@ function game(pack, playerNames) {
 let pack = new Pack();
 pack.setPack(suits, values)
 
+let gamePack = pack.getPack();
 
 
-game(pack.getPack(), ['elias', 'luis']);
+game(gamePack, [[ '6C', '2C', '2S', '9S', '4D' ], [ 'AC', '9D', '8D', 'QD', '8C' ]]);
 
 
 
