@@ -194,40 +194,55 @@ class Rules {
         
         //Combinaciones
         for (let i = 0; i < hand.length; i++) {
-            console.log(hand[0]);
-            
-            if (i > 0) {
-                if (hand[0].charAt(0) === hand[i].charAt(0)) {
-                    this.combinations.push(hand[0].charAt(0));
-                }
+            // console.log('HAD',hand[0]);
+            console.log('HADq',hand[0].charAt(0));
+            console.log('HAD',hand[i].charAt(0));
+            let hand1;
+            let hand2;
+
+            if (i+1 < 5) {
+                hand1 = hand[i].charAt(0); 
+                console.log('hand1', hand1);
+                
+                hand2 = hand[i+1].charAt(0); 
+                console.log('hand2', hand2);
+                
+            }
+            //corregir problema
+            if (hand1 === hand2  ){
+                console.log('LOG');
+                this.combinations.push(hand[i].charAt(0));
                 
             }
         }
-        
-        if (this.combinations.length == 1) {
-            this.result = types.pair;     
-            this.criteriaArray.push(hand[0]);
+            // this.combinations.shift();
             
-        }else if (this.combinations.length == 2) {
-            this.result = types.threeOfkind;        
-            this.criteriaArray.push(hand[0]);
-            
-        }else if (this.combinations.length == 3) {
-            this.result = types.poker;        
-            this.criteriaArray.push(hand[0]);
-            
-        }
+            // if (this.combinations.length == 1) {
+            //     this.result = types.pair;     
+            //     this.criteriaArray.push(this.combinations);
+                
+            // }else if (this.combinations.length == 2) {
+            //     this.result = types.threeOfkind;        
+            //     this.criteriaArray.push(this.combinations);
+                
+            // }else if (this.combinations.length == 3) {
+            //     this.result = types.poker;        
+            //     this.criteriaArray.push(this.combinations);
+                
+            // }
 
-        //Color
-        for (let i = 0; i < hand.length; i++) {
-            if (i == 0) {} else if (hand[0].charAt(1) === hand[i].charAt(1)) {
-                this.colors.push(hand[0].charAt(1));
-            }
-        }
+        console.log('COMBI', this.combinations);
         
-        if (this.colors.length == 4) {
-            this.result = types.flush;        
-        }
+        //Color
+        // for (let i = 0; i < hand.length; i++) {
+        //     if (i == 0) {} else if (hand[0].charAt(1) === hand[i].charAt(1)) {
+        //         this.colors.push(hand[0].charAt(1));
+        //     }
+        // }
+        
+        // if (this.colors.length == 4) {
+        //     this.result = types.flush;        
+        // }
         console.log('CRITERIA', this.criteria);
         console.log('CRITERIA ARRAY', this.criteriaArray);
         this.criteriaArray.forEach(card => {
